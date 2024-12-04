@@ -29,22 +29,28 @@ try {
 
     // Query expenses by category 
     $queryCategory = "
-        select distinct category, SUM(amount) as total
-        from expenses
-        WHERE date >= CURRENT_DATE - INTERVAL '1 month'
-        group	by category ;
+        SELECT 
+            category, 
+            TO_CHAR(date, 'YYYY-MM') AS month,
+            SUM(amount) AS total
+        FROM 
+            expenses
+        WHERE 
+            date >= DATE_TRUNC('month', CURRENT_DATE)
+        GROUP BY 
+            category, 
+            TO_CHAR(date, 'YYYY-MM');
+        ";
+        $stmtCategory = $conn->prepare($queryCategory);
+        $stmtCategory->execute();
+        $categoryExpenses = $stmtCategory->fetchAll(PDO::FETCH_ASSOC);
 
-    ";
-    $stmtCategory = $conn->prepare($queryCategory);
-    $stmtCategory->execute();
-    $categoryExpenses = $stmtCategory->fetchAll(PDO::FETCH_ASSOC);
-
-    // Gabungkan data
-    $response = [
+        // Gabungkan data
+        $response = [
         'daily' => $dailyExpenses,
         'monthly' => $monthlyExpenses,
-        'category' => $categoryExpenses
-    ];
+        'category' => $categoryExpenses ?: [] // Jika tidak ada data, gunakan array kosong
+        ];
 
     header('Content-Type: application/json');
     echo json_encode($response);

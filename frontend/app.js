@@ -216,7 +216,7 @@ function renderCategoryChart(categoryData) {
         {
           label: "Pengeluaran Berdasarkan Kategori",
           data: values, // Total pengeluaran
-          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"], // Tambahkan warna untuk setiap kategori
+          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40", "#2877b3", "#63ffde", "#FF1748"], // Tambahkan warna untuk setiap kategori
           borderWidth: 1,
         },
       ],
